@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 let appTitleColor = '#fff';
-let defaultTextColor = '#333';
+let defaultTextColor = '#f5f5f5';
 let defaultStyles = {
   color: defaultTextColor
 };
@@ -34,7 +34,7 @@ let fakeServerData = {
 class PlaylistCounter extends Component {
   render() {
     return (
-      <div className="component" style={{...defaultStyles, display: 'inline-block', width: '45%', marginRight: '1%'}}>
+      <div style={{...defaultStyles, display: 'inline-block', width: '45%', marginRight: '1%'}}>
         <h2>{this.props.playlists.length} playlists</h2>
       </div>
     );
@@ -59,7 +59,7 @@ class HoursCounter extends Component {
     }
 
     return (
-      <div className="component" style={{...defaultStyles, display: 'inline-block', width: '45%', marginRight: '1%'}}>
+      <div style={{...defaultStyles, display: 'inline-block', width: '45%', marginRight: '1%'}}>
         <h2>{totalDuration.toFixed(1)} {durationText}</h2>
       </div>
     );
@@ -79,13 +79,15 @@ class Filter extends Component {
 
 class Playlist extends Component {
   render() {
+    let playlist = this.props.playlist;
     return (
-      <div className='component' style={{...defaultStyles, width: '20%', display: 'inline-block'}}>
+      <div style={{...defaultStyles, width: '20%', display: 'inline-block'}}>
         <img />
-        <h3>Playlist Name</h3>
+        <h3>{playlist.name}</h3>
         <ul>
-          <li>Song 1</li>
-          <li>Song 2</li>
+          {playlist.songs.map(song => 
+            <li>{song.name}</li>
+          )}
         </ul>
       </div>
     );
@@ -113,10 +115,9 @@ class App extends Component {
             <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
             <HoursCounter playlists={this.state.serverData.user.playlists}/>
             <Filter/>
-            <Playlist/>
-            <Playlist/>
-            <Playlist/>
-            <Playlist/>
+            {this.state.serverData.user.playlists.map(playlist =>
+              <Playlist playlist={playlist}/>
+            )}
           </div> : <h1 style={{color: appTitleColor}}>Getting ready...</h1>
         }
       </div>
